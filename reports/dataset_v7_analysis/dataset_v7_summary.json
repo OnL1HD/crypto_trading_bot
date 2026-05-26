@@ -1,0 +1,25 @@
+{
+  "symbol": "BTCUSDT",
+  "timeframe": "15m",
+  "renamed_mapping": "normalized v7 corresponds to old v3 feature/labeled/split/window artifacts",
+  "date_range": {
+    "start": "2020-03-25T10:30:00+00:00",
+    "end": "2026-05-06T15:45:00+00:00"
+  },
+  "feature_count": 26,
+  "sequence_length": 256,
+  "split_sizes": {
+    "train_rows": 132053,
+    "validation_rows": 35136,
+    "test_rows": 46916
+  },
+  "window_counts": {
+    "train": 80017,
+    "validation": 21141,
+    "test": 25999,
+    "total": 127157
+  },
+  "label_horizon": 12,
+  "return_threshold": 0.003,
+  "selected_feature_count": 15
+}

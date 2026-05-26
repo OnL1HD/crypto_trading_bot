@@ -1,0 +1,182 @@
+# 3.4 Sprendimų grandinės ir automatinio ciklo rezultatai
+
+## Analizuotų istorijos failų apimtis
+
+| Sluoksnis | Failas | Įrašų skaičius | Laiko stulpelis | Ankstyviausias laikas | Vėliausias laikas |
+| --- | --- | --- | --- | --- | --- |
+| Signalų istorija | data/signals/BTCUSDT_15m_signal_history.parquet | 638 | predicted_for_timestamp | 2026-04-14T17:00:00+00:00 | 2026-05-04T20:00:00+00:00 |
+| Strategijos istorija | data/strategy/BTCUSDT_15m_strategy_history.parquet | 577 | predicted_for_timestamp | 2026-04-24T17:15:00+00:00 | 2026-05-04T20:00:00+00:00 |
+| Rizikos istorija | data/risk/BTCUSDT_15m_risk_history.parquet | 18974 | predicted_for_timestamp | 2026-04-25T17:45:00+00:00 | 2026-05-04T20:00:00+00:00 |
+| Automatiniai ciklai | data/automation/BTCUSDT_15m_automation_cycles.parquet | 605 | bar_timestamp | 2026-04-25T19:30:00+00:00 | 2026-05-08T00:15:00+00:00 |
+| Vykdymo žurnalas | data/execution/BTCUSDT_linear_execution_log.parquet | 51 | attempted_at | 2026-04-20T19:28:49.287153+00:00 | 2026-05-06T13:46:52.998247+00:00 |
+
+## Signalų sluoksnio rezultatai
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Signalų įrašų skaičius | 638 |
+| BUY | 9 (1.41%) |
+| SELL | 425 (66.61%) |
+| HOLD | 204 (31.97%) |
+| probability_up min | 0.000209 |
+| probability_up mean | 0.294776 |
+| probability_up median | 0.298126 |
+| probability_up max | 0.666610 |
+| Confidence bucket skirstinys | nerasta – signalų istorijoje nėra confidence_bucket stulpelio. |
+| Signalų faile rasti stulpeliai | generated_at, source_timestamp, predicted_for_timestamp, close_price, prediction_class, probability_up, signal_type, signal_reason, model_version, model_path |
+
+## Strategijos sluoksnio rezultatai
+
+| Veiksmas | Skaičius | Dalis nuo strategijos įrašų |
+| --- | --- | --- |
+| OPEN_LONG | 0 | 0.00% |
+| OPEN_SHORT | 25 | 4.33% |
+| HOLD | 500 | 86.66% |
+| SKIP | 52 | 9.01% |
+
+| Dažniausia strategijos priežastis | Skaičius |
+| --- | --- |
+| base_signal_hold | 189 |
+| strategy_hold_no_tradeable_signal | 125 |
+| short_position_already_open | 118 |
+| strong_counter_trend_signal_allowed | 68 |
+| short_entry_approved_strong_confidence | 25 |
+| sell_signal_below_entry_threshold | 21 |
+| trend_alignment_required | 12 |
+| volume_filter_blocked | 6 |
+| counter_trend_signal_blocked | 6 |
+| flip_noise_guard_blocked | 3 |
+
+| Confidence bucket | Skaičius |
+| --- | --- |
+| STRONG_BEARISH | 288 |
+| NEUTRAL | 189 |
+| MEDIUM_BEARISH | 65 |
+| WEAK_BEARISH | 26 |
+| MEDIUM_BULLISH | 6 |
+| WEAK_BULLISH | 3 |
+
+- Iš viso strategijos sprendimų: 577.
+- Kandidatiniai prekybiniai veiksmai (OPEN_LONG + OPEN_SHORT): 25.
+- Persidengiančio strategijos ir signalų laikotarpio langas: 2026-04-24T17:15:00+00:00 – 2026-05-04T20:00:00+00:00.
+- Iš 388 ne HOLD signalų persidengiančiame lange 25 virto kandidatiniais veiksmais OPEN_LONG arba OPEN_SHORT (6.44%).
+
+## Rizikos sluoksnio rezultatai
+
+| Rizikos būsena | Skaičius | Dalis nuo rizikos įrašų |
+| --- | --- | --- |
+| allowed | 176 | 0.93% |
+| blocked | 492 | 2.59% |
+| skipped | 18306 | 96.48% |
+
+| Patvirtintas veiksmas | Skaičius |
+| --- | --- |
+| SKIP | 18798 |
+| OPEN_SHORT | 176 |
+
+| Dažniausia rizikos blokavimo priežastis | Skaičius |
+| --- | --- |
+| MAX_CONSECUTIVE_LOSSES_REACHED | 492 |
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Rizikos įrašų skaičius | 18974 |
+| Leistų sprendimų order_notional_usdt min | 100.000000 |
+| Leistų sprendimų order_notional_usdt mean | 227.840909 |
+| Leistų sprendimų order_notional_usdt median | 100.000000 |
+| Leistų sprendimų order_notional_usdt max | 600.000000 |
+| Leistų sprendimų approved_leverage min | 2.000000 |
+| Leistų sprendimų approved_leverage mean | 3.159091 |
+| Leistų sprendimų approved_leverage median | 2.000000 |
+| Leistų sprendimų approved_leverage max | 13.000000 |
+
+- Pastaba: rizikos istorija yra append-only, todėl tas pats predicted_for_timestamp gali būti įvertintas kelis kartus skirtinguose automatikos cikluose ar rankiniuose kvietimuose.
+
+## Automatinio ciklo rezultatai
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Iš viso ciklų | 605 |
+| Sėkmingi ciklai | 579 |
+| Praleisti ciklai | 26 |
+| Nesėkmingi ciklai | 0 |
+| Ciklai be prekybos bandymo | 586 |
+| Ciklai su vykdymo bandymu | 19 |
+| Ciklai su identifikuotu sėkmingu vykdymu | 19 |
+
+| Dažniausia skip/error priežastis | Skaičius |
+| --- | --- |
+| RISK_BLOCKED | 560 |
+| CYCLE_DELAY_EXCEEDED | 19 |
+| BAR_ALREADY_PROCESSED | 7 |
+| Cycle delayed by 107s from scheduler | 5 |
+| Cycle delayed by 93s from scheduler | 3 |
+| Cycle delayed by 104s from scheduler | 2 |
+| Cycle delayed by 109s from scheduler | 2 |
+| Cycle delayed by 110s from scheduler | 1 |
+| Cycle delayed by 94s from scheduler | 1 |
+| Cycle delayed by 114s from scheduler | 1 |
+
+## Vykdymo bandymų rezultatai
+
+| Vykdymo būsena | Skaičius | Dalis nuo vykdymo įrašų |
+| --- | --- | --- |
+| placed | 21 | 41.18% |
+| closed | 19 | 37.25% |
+| failed | 5 | 9.80% |
+| skipped | 3 | 5.88% |
+| rejected | 2 | 3.92% |
+| disabled | 1 | 1.96% |
+
+| Dažniausia skip/fail priežastis | Skaičius |
+| --- | --- |
+| skipped: Signal is HOLD or that direction is disabled by config. | 3 |
+| failed: Demo trading credentials are not configured in backend env. | 2 |
+| rejected: Risk blocked execution: NON_EXECUTABLE_ACTION | 2 |
+| disabled: Execution is disabled by config. | 1 |
+| failed: Failed to apply leverage: Bybit demo API error (10004): Error sign, please check your signature generation algorithm: origin_string[1776778777624V5VtzuWaz7Av51fKd95000{"category": "linear", "symbol": "BTCUSDT", "buyLeverage": "2", "sellLeverage": "2"}] | 1 |
+| failed: Configured fixed_order_usdt is too small for the instrument minimum quantity constraints. | 1 |
+| failed: Failed to apply leverage: Bybit demo API error (110043): leverage not modified | 1 |
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Vykdymo žurnalo įrašų skaičius | 51 |
+| Įrašai, pasiekę realų demo order_id (visi) | 40 |
+| Įrašai, pasiekę realų demo order_id (tik entry bandymai) | 21 |
+| Unikalūs entry vykdymo bandymai | 29 |
+| Unikalūs sėkmingi entry vykdymai | 21 |
+
+## Sprendimų grandinės piltuvėlis
+
+| Piltuvėlio etapas | Skaičius | Pastaba |
+| --- | --- | --- |
+| Modelio signalai iš viso | 563 | Bendras laikotarpis: 2026-04-25T17:45:00+00:00 – 2026-05-04T20:00:00+00:00. |
+| Ne HOLD signalai | 377 | Dalis nuo modelio signalų: 66.96%. |
+| Strategijos OPEN veiksmai | 25 | Dalis nuo ne HOLD signalų: 6.63%. |
+| Rizikos leisti veiksmai | 23 | Dalis nuo strategijos OPEN veiksmų: 92.00%. |
+| Vykdymo bandymai | 19 | Dalis nuo rizikos leistų veiksmų: 82.61%. |
+| Sėkmingi vykdymai | 19 | Dalis nuo vykdymo bandymų: 100.00%. |
+
+- Piltuvėlis apribotas bendru laikotarpiu 2026-04-25T17:45:00+00:00 – 2026-05-04T20:00:00+00:00, nes signalų istorija prasideda anksčiau nei strategijos ir rizikos istorijos. Rizikos etapas skaičiuotas pagal unikalius predicted_for_timestamp, kuriems bent kartą buvo gautas allowed=True ir OPEN_* approved_action, nes rizikos istorija yra append-only ir vėlesni pervertinimai gali pakeisti paskutinę būseną.
+
+## Sugeneruotos vizualizacijos
+
+| Failo pavadinimas | Ką rodo | Siūloma lietuviška antraštė |
+| --- | --- | --- |
+| signal_action_distribution.png | Parodo BUY, SELL ir HOLD signalų skaičių signalų istorijoje. | 3.4 pav. Signalų sluoksnio veiksmų pasiskirstymas (BUY, SELL, HOLD). |
+| strategy_action_distribution.png | Parodo strategijos sluoksnio veiksmų OPEN_LONG, OPEN_SHORT, HOLD ir SKIP pasiskirstymą. | 3.5 pav. Strategijos sluoksnio veiksmų pasiskirstymas. |
+| risk_decision_distribution.png | Parodo, kiek rizikos sprendimų buvo leisti, blokuoti arba priskirti prie skipped. | 3.6 pav. Rizikos sluoksnio sprendimų pasiskirstymas. |
+| automation_cycle_status_distribution.png | Parodo automatinių ciklų būsenų success, skipped ir failed pasiskirstymą. | 3.7 pav. Automatinio ciklo būsenų pasiskirstymas. |
+| decision_funnel.png | Parodo sprendimų grandinės mažėjimą nuo signalų iki sėkmingų vykdymų bendrame laikotarpyje. | 3.8 pav. Sprendimų grandinės piltuvėlis nuo signalų iki sėkmingo vykdymo. |
+| top_strategy_reasons.png | Parodo 10 dažniausių strategijos veiksmų priežasčių. | 3.9 pav. Dažniausios strategijos sluoksnio sprendimo priežastys. |
+| top_risk_block_reasons.png | Parodo 10 dažniausių rizikos sluoksnio blokavimo priežasčių. | 3.10 pav. Dažniausios rizikos sluoksnio blokavimo priežastys. |
+
+## Svarbiausios interpretacijos 3.4 skyriui
+
+- Signalų istorijoje užfiksuoti 638 modelio interpretacijos įrašai; tarp jų BUY sudaro 1.41%, SELL – 66.61%, HOLD – 31.97%.
+- Strategijos sluoksnis sugeneravo 577 sprendimų, iš kurių 25 buvo kandidatiniai atidarymo veiksmai OPEN_LONG arba OPEN_SHORT.
+- Rizikos sluoksnyje sukaupta 18974 sprendimų; allowed sudaro 0.93%, blocked – 2.59%, skipped – 96.48%.
+- Automatiniame cikle sukaupti 605 ciklai, iš kurių 579 baigėsi success, 26 – skipped, o 0 – failed.
+- Vykdymo žurnale matyti 51 įrašas(-ai); 21 unikalūs entry bandymai pasiekė sėkmingą demo vykdymą.
+- Piltuvėlis turi būti interpretuojamas tik bendrame sluoksnių persidengimo laikotarpyje, nes signalų istorija prasideda anksčiau nei strategijos ir rizikos istorijos.
+- Šiame skyriuje sąmoningai nevertinamas galutinis PnL ar uždarytų sandorių rezultatyvumas; tai palikta 3.5 poskyriui.

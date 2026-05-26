@@ -1,0 +1,145 @@
+exchange: bybit
+symbol: BTCUSDT
+timeframe: 15m
+
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  features_dir: data/features
+  datasets_dir: data/datasets
+  labeled_dir: data/labeled
+  splits_dir: data/splits
+  windows_dir: data/windows
+  normalized_dir: data/normalized
+  inference_dir: data/inference
+  signals_dir: data/signals
+  strategy_dir: data/strategy
+  risk_dir: data/risk
+  automation_dir: data/automation
+  position_management_dir: data/position_management
+  reconciliation_dir: data/reconciliation
+  execution_dir: data/execution
+
+split:
+  train_start: "2020-01-01"
+  train_end: "2023-12-31"
+  val_start: "2024-01-01"
+  val_end: "2024-12-31"
+  test_start: "2025-01-01"
+
+inference:
+  model_path: artifacts/models/tcn_v1_best.pt
+  scaler_stats_path: data/normalized/BTCUSDT_15m_scaler_stats_v5.npz
+  window_size: 256
+  model_type: tcn
+  device: cpu
+  probability_threshold: 0.5
+  input_layout: batch_feature_window
+  max_gap_minutes: 120
+  allow_unsafe_deserialization: true
+
+live_updates:
+  enabled: true
+  poll_seconds: 30
+  lag_seconds: 90
+
+strategy:
+  version: v1
+  buy_signal_threshold: 0.55
+  sell_signal_threshold: 0.45
+  entry_long_threshold: 0.58
+  entry_short_threshold: 0.42
+  strong_buy_threshold: 0.70
+  strong_sell_threshold: 0.30
+  use_trend_filter: true
+  use_volatility_filter: true
+  use_volume_filter: true
+  use_momentum_filter: true
+  require_trend_alignment_for_weak_signals: true
+  allow_counter_trend_on_strong_signal: true
+  min_atr_14_pct: 0.001
+  min_volume_ma_ratio_20: 0.8
+  min_turnover_ma_ratio_20: 0.8
+  min_signal_persistence_bars: 1
+  flip_noise_guard_enabled: true
+
+risk:
+  version: v2
+  max_open_positions: 2
+  max_total_open_notional_usdt: 1000
+  fixed_order_usdt: 100
+  min_order_notional_usdt: 75
+  max_order_notional_usdt: 600
+  min_risk_budget_usdt: 1.5
+  max_risk_budget_usdt: 6
+  default_leverage: 2
+  max_allowed_leverage: 20
+  min_dynamic_leverage: 2
+  max_dynamic_leverage: 20
+  require_fresh_strategy: true
+  max_strategy_age_minutes: 20
+  enable_cooldown: false
+  cooldown_minutes: 15
+  enable_daily_loss_lock: true
+  max_daily_realized_loss_usdt: 20
+  enable_consecutive_loss_pause: true
+  max_consecutive_losses: 100
+  stop_loss_mode: atr
+  take_profit_mode: atr
+  stop_loss_atr_multiple: 1.0
+  take_profit_atr_multiple: 1.5
+  fallback_stop_loss_pct: 0.01
+  fallback_take_profit_pct: 0.015
+
+automation:
+  version: v1
+  enabled: true
+  dry_run: false
+  run_execution_step: true
+  auto_execute_demo_orders: true
+  require_completed_bar: true
+  allow_reprocess_latest_bar: false
+  max_cycle_delay_seconds: 90
+  pause_on_stage_failure: false
+
+position_management:
+  version: v1
+  enabled: true
+  evaluate_each_cycle: true
+  enable_stop_loss_exit: true
+  enable_take_profit_exit: true
+  enable_max_holding_exit: true
+  enable_opposite_signal_exit: true
+  max_holding_minutes: 240
+  require_strong_opposite_signal_for_exit: true
+  opposite_signal_confidence_threshold_long_exit: 0.40
+  opposite_signal_confidence_threshold_short_exit: 0.60
+  close_positions_via_demo_execution: true
+
+reconciliation:
+  version: v1
+  enabled: true
+  run_on_startup: true
+  run_pre_execution_check: true
+  run_post_cycle_check: true
+  block_on_mismatch: true
+  size_tolerance_ratio: 0.05
+  size_tolerance_min_qty: 0.00001
+
+execution:
+  enabled: true
+  mode: demo
+  symbol: BTCUSDT
+  market_type: linear
+  order_type: market
+  allow_long: true
+  allow_short: true
+  leverage: 20
+  max_open_positions: 2
+  fixed_order_usdt: 100
+  cooldown_minutes: 0
+  prevent_duplicate_signal_execution: true
+  close_opposite_before_flip: true
+  require_signal_freshness: true
+  max_signal_age_minutes: 20
+  dry_run_logging: true

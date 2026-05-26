@@ -1,0 +1,123 @@
+# 3.5 Demonstracinės prekybos, pozicijų valdymo ir būsenų suderinimo rezultatai
+
+## Analizuotų istorijos failų apimtis
+
+| Sritis | Failas | Įrašų skaičius | Ankstyviausias laikas | Vėliausias laikas | Pastaba |
+| --- | --- | --- | --- | --- | --- |
+| Sandorių istorija | data/execution/BTCUSDT_linear_trades.parquet | 21 | 2026-04-21T14:06:03.782667+00:00 | 2026-05-06T13:46:52.981000+00:00 | Aprėptis skaičiuota nuo ankstyviausio entry_time iki vėliausio exit_time. |
+| Vykdymo žurnalas | data/execution/BTCUSDT_linear_execution_log.parquet | 51 | 2026-04-20T19:28:49.287153+00:00 | 2026-05-06T13:46:52.998247+00:00 | Naudotas attempted_at stulpelis. |
+| Pozicijų priežiūra | data/position_management/BTCUSDT_15m_position_management_history.parquet | 139 | 2026-04-26T13:47:42.368989+00:00 | 2026-05-06T13:46:53.015148+00:00 | Naudotas decided_at stulpelis. |
+| Būsenų suderinimas | data/reconciliation/BTCUSDT_15m_reconciliation_history.parquet | 1203 | 2026-04-25T19:31:28.007156+00:00 | 2026-05-08T00:33:08.239240+00:00 | Naudotas checked_at stulpelis. |
+
+## Demonstracinės prekybos rezultatų santrauka
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Uždarytų sandorių skaičius | 21 |
+| Uždarytų sandorių su realizuotu PnL | 19 |
+| Uždarytų sandorių be realizuoto PnL | 2 |
+| LONG sandorių skaičius | 0 |
+| SHORT sandorių skaičius | 21 |
+| Pelningų sandorių skaičius | 7 |
+| Nuostolingų sandorių skaičius | 12 |
+| Nulinių sandorių skaičius | 0 |
+| Laimėjimų dalis (tik iš sandorių su žinomu PnL) | 36.84% |
+| Bendras realizuotas PnL, USDT | -11.69917 |
+| Grynoji grąža, % | nerasta |
+| Vidutinis PnL vienam sandoriui, USDT | -0.61575 |
+| Medianinis PnL vienam sandoriui, USDT | -0.18230 |
+| Geriausias sandoris, USDT | 8.93235 |
+| Blogiausias sandoris, USDT | -12.02236 |
+| Vidutinė laikymo trukmė | 504.10 min. |
+| Medianinė laikymo trukmė | 75.38 min. |
+| Trumpiausia laikymo trukmė | 15.10 min. |
+| Ilgiausia laikymo trukmė | 6107.79 min. |
+| Šiuo metu atvirų vietinių sandorių skaičius | 0 |
+
+- nerasta – sandorių istorijoje nėra portfelio kapitalo arba sąskaitos balanso stulpelio, todėl grynosios grąžos procentas neapskaičiuotas.
+- Kaupiamasis realizuotas PnL pavaizduotas figūroje `realized_pnl_curve.png` ir skaičiuotas tik iš uždarytų sandorių, kuriuose buvo užpildytas `realized_pnl` laukas.
+
+## Sandorių krypties analizė
+
+| Kryptis | Sandorių skaičius | Pelningų sandorių skaičius | Laimėjimų dalis | Bendras PnL, USDT | Vidutinis PnL, USDT |
+| --- | --- | --- | --- | --- | --- |
+| LONG | 0 | 0 | nerasta | nerasta | nerasta |
+| SHORT | 21 | 7 | 36.84% | -11.69917 | -0.61575 |
+
+- Analizuojamoje istorijoje neužfiksuota nė vieno LONG sandorio; visi uždaryti sandoriai buvo SHORT krypties.
+
+## Pozicijų uždarymo priežastys
+
+| Uždarymo priežastis | Sandorių skaičius | Dalis nuo uždarytų sandorių | Vidutinis PnL, USDT | Bendras PnL, USDT | Pastaba |
+| --- | --- | --- | --- | --- | --- |
+| Stop-loss | 11 | 52.38% | -2.03147 | -22.34618 | apskaičiuota iš uždarytų sandorių |
+| Take-profit | 6 | 28.57% | 1.76579 | 10.59471 | apskaičiuota iš uždarytų sandorių |
+| Maksimali laikymo trukmė | 2 | 9.52% | 0.02615 | 0.05230 | apskaičiuota iš uždarytų sandorių |
+| Rankinis suderinimo valymas | 2 | 9.52% | nerasta | nerasta | realized_pnl nerasta |
+
+- `source_exit_signal` laukas leido atskirti pozicijų valdymo uždarymus nuo rankinio suderinimo valymo.
+- `pnl_by_close_reason.png` figūroje parodytas vidutinis realizuotas PnL pagal uždarymo priežastį tik tiems atvejams, kuriuose `realized_pnl` reikšmė buvo užfiksuota.
+
+## Pozicijų priežiūros rezultatai
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Iš viso pozicijų priežiūros patikrų | 139 |
+| Unikalios stebėtos pozicijos | 19 |
+| Uždarymo rekomendacijų skaičius (should_execute_close=True) | 19 |
+| Pozicijų laikymo sprendimų skaičius (should_execute_close=False) | 120 |
+| Įvykdytų uždarymų skaičius (executed_close=True) | 19 |
+| Įrašų su executed_close=False skaičius | 120 |
+| Tiesioginis would_close stulpelis | nerasta – naudotas artimiausias atitikmuo should_execute_close. |
+| Vidutinė laikymo trukmė uždarymo sprendimo momentu | 226.79 min. |
+
+| Dažniausia pozicijų priežiūros priežastis | Skaičius |
+| --- | --- |
+| Pozicija laikoma | 120 |
+| Stop-loss | 11 |
+| Take-profit | 6 |
+| Maksimali laikymo trukmė | 2 |
+
+- Pozicijų priežiūros istorijoje dominuoja `position_hold` sprendimai, tačiau visi `should_execute_close=True` atvejai taip pat turi `executed_close=True` reikšmę.
+- Tai rodo, kad uždarymo rekomendacijos pozicijų valdymo sluoksnyje praktikoje buvo paverstos realiais uždarymais per demonstracinio vykdymo mechanizmą.
+
+## Būsenų suderinimo rezultatai
+
+| Rodiklis | Reikšmė |
+| --- | --- |
+| Iš viso suderinimo patikrų | 1203 |
+| Pilnų atitikimų skaičius | 1199 |
+| Neatitikimų skaičius | 4 |
+| Blokuojančių neatitikimų skaičius | 4 |
+| Suderinimo sėkmės rodiklis | 99.67% |
+| Tiesioginis automatinio sutvarkymo žymuo | nerasta |
+
+| Dažniausia neatitikimo / blokavimo priežastis | Skaičius |
+| --- | --- |
+| LOCAL_OPEN_EXCHANGE_FLAT | 4 |
+| POSITION_COUNT_MISMATCH | 4 |
+
+- Istorijoje matyti rankinio suderinimo požymiai: dvi vietinės OPEN pozicijos uždarytos su priežastimi `manual_reconciliation_cleanup:exchange_flat`, po to vėlesni suderinimo įrašai tapo `ok`.
+- Automatinio neatitikimų išsprendimo žyma nerasta – atskiras automatinio sutvarkymo stulpelis neaptiktas.
+- Naujausi suderinimo įrašai rodo `ok` būseną ir nulinius vietinių bei Bybit demonstracinių atvirų pozicijų skaitiklius.
+
+## Sugeneruotos vizualizacijos
+
+| Failo pavadinimas | Ką rodo | Siūloma lietuviška antraštė |
+| --- | --- | --- |
+| realized_pnl_curve.png | Parodo kaupiamojo realizuoto PnL kitimą pagal uždarytų sandorių laiką. | 3.11 pav. Kaupiamojo realizuoto demonstracinių sandorių PnL kitimas laike. |
+| trade_pnl_by_trade.png | Parodo kiekvieno uždaryto sandorio realizuotą PnL atskiru stulpeliu. | 3.12 pav. Atskirų uždarytų demonstracinių sandorių realizuotas PnL. |
+| trade_outcome_distribution.png | Parodo pelningų, nuostolingų, nulinių ir PnL neturinčių sandorių pasiskirstymą. | 3.13 pav. Uždarytų sandorių baigčių pasiskirstymas. |
+| close_reason_distribution.png | Parodo uždarymo priežasčių pasiskirstymą tarp visų uždarytų sandorių. | 3.14 pav. Uždarytų sandorių priežasčių pasiskirstymas. |
+| holding_duration_distribution.png | Parodo uždarytų sandorių laikymo trukmės skirstinį valandomis. | 3.15 pav. Uždarytų demonstracinių sandorių laikymo trukmės skirstinys. |
+| reconciliation_status_distribution.png | Parodo pilnų atitikimų, neužblokuotų neatitikimų ir blokuojančių neatitikimų skaičių. | 3.16 pav. Būsenų suderinimo rezultatų pasiskirstymas. |
+| pnl_by_close_reason.png | Parodo vidutinį realizuotą PnL pagal uždarymo priežastį ten, kur PnL reikšmė buvo užfiksuota. | 3.17 pav. Vidutinis realizuotas PnL pagal sandorio uždarymo priežastį. |
+
+## Svarbiausios interpretacijos 3.5 skyriui
+
+- Demonstracinė prekyba techniškai veikė: vykdymo žurnale rasti 21 sėkmingi atidarymo įrašai su `status=placed`, o pozicijų priežiūros istorijoje 19 uždarymo sprendimų buvo realiai įvykdyta (`executed_close=True`).
+- Pozicijų atidarymo ir uždarymo grandinė buvo nuosekli: sandorių faile iš viso užfiksuotas 21 uždarytų sandorių skaičius, o analizės pabaigoje vietinių OPEN sandorių nebeliko.
+- Finansinis rezultatas analizuojamu laikotarpiu buvo neigiamas: bendras realizuotas PnL iš 19 sandorių su žinomu rezultatu sudarė -11.69917 USDT, o laimėjimų dalis siekė 36.84%.
+- Neigiamas realizuotas PnL pats savaime nepaneigia techninio prototipo tinkamumo, nes šiame etape buvo tikrinama, ar sistema geba automatiškai atidaryti, prižiūrėti, uždaryti ir suderinti pozicijų būsenas tarp vietinės istorijos ir Bybit demonstracinės aplinkos.
+- Imtis ekonominėms išvadoms dar per maža: sandorių istorijoje tėra 21 uždarytas sandoris, iš kurių 2 buvo uždaryti rankinio suderinimo valymo metu ir neturi realizuoto PnL reikšmės.
+- Tolimesniam darbo etapui tai reiškia, kad verta ilginti stebėjimo laikotarpį, kaupti didesnę demonstracinių sandorių imtį ir tik tada vertinti ekonominį strategijos gyvybingumą; tuo pačiu galima tobulinti išėjimo taisykles ir automatizuoto suderinimo mechanizmus.

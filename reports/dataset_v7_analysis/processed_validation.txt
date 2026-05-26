@@ -1,0 +1,74 @@
+========================================================================
+DATA VALIDATION REPORT
+========================================================================
+
+A) File and Schema Checks
+------------------------------------------------------------------------
+Dataset type: processed
+Dataset path: C:\Users\sluck\Downloads\crypto-trading-bot\data\processed\BTCUSDT_15m_clean.parquet
+File exists: YES
+Required columns present: YES
+
+B) Null Checks
+------------------------------------------------------------------------
+close        0
+high         0
+low          0
+open         0
+open_time    0
+turnover     0
+volume       0
+
+C) Duplicate Timestamp Checks
+------------------------------------------------------------------------
+Duplicate open_time rows: 0
+
+D) Timestamp Ordering Checks
+------------------------------------------------------------------------
+Non-increasing timestamp steps: 0
+
+E) Time Interval Continuity Checks
+------------------------------------------------------------------------
+Expected frequency: 15m (0 days 00:15:00)
+Missing interval / gap count: 1
+Intervals smaller than expected: 0
+Total broken intervals: 1
+Note: processed/features datasets may contain interval gaps after filtering/warmup.
+Example broken intervals:
+           prev_open_time                 open_time            diff
+2022-04-06 08:15:00+00:00 2022-04-06 09:00:00+00:00 0 days 00:45:00
+
+F) OHLC Logical Consistency Checks
+------------------------------------------------------------------------
+high < open: 0
+high < close: 0
+low > open: 0
+low > close: 0
+high < low: 0
+
+G) Numeric Sanity Checks
+------------------------------------------------------------------------
+open <= 0: 0
+high <= 0: 0
+low <= 0: 0
+close <= 0: 0
+volume < 0: 0
+turnover < 0: 0
+volume == 0: 0
+
+H) Constant Metadata Checks
+------------------------------------------------------------------------
+Skipped for non-raw dataset.
+
+I) Dataset Summary
+------------------------------------------------------------------------
+Total rows: 214388
+Earliest open_time: 2020-03-25 10:30:00+00:00
+Latest open_time: 2026-05-06 15:45:00+00:00
+Expected frequency: 15m
+Number of interval gaps: 1
+Number of duplicate timestamps: 0
+
+J) Final Verdict
+------------------------------------------------------------------------
+VALIDATION PASSED WITH WARNINGS

@@ -1,0 +1,112 @@
+Paruošto duomenų rinkinio analizė: v7
+
+Duomenų rinkinio tapatybė
+- Symbolis: BTCUSDT
+- Laikotarpis: 15m
+- Normalizuotas galutinis variantas: v7
+- Atitinkantis ankstesnis artifactų rinkinys: features/labeled/splits/windows v3
+- Pažymių skaičius: 26
+- Sekos ilgis: 256
+- Etikečių horizontas: 12 (nustatyta pagal v3 eksperimentų dokumentaciją, nes artifactuose ši reikšmė nesaugoma)
+- Gražos slenkstis: 0.003 (nustatyta pagal v3 eksperimentų dokumentaciją, nes artifactuose ši reikšmė nesaugoma)
+
+Duomenų rinkinio apimtis
+Tipas | Failas | Eilučių / pavyzdžių skaičius | Pradžia | Pabaiga
+Raw | 15m.parquet | 214390 | 2020-03-25T10:30:00+00:00 | 2026-05-06T15:45:00+00:00
+Processed | BTCUSDT_15m_clean.parquet | 214388 | 2020-03-25T10:30:00+00:00 | 2026-05-06T15:45:00+00:00
+Features v3 | BTCUSDT_15m_features_v3.parquet | 214285 | 2020-03-26T10:15:00+00:00 | 2026-05-06T13:45:00+00:00
+Labeled v3 | BTCUSDT_15m_labeled_v3.parquet | 214105 | 2020-03-26T10:15:00+00:00 | 2026-05-04T16:45:00+00:00
+Split TRAIN v3 | BTCUSDT_15m_train_v3.parquet | 132053 | 2020-03-26T10:15:00+00:00 | 2023-12-31T23:45:00+00:00
+Split VALIDATION v3 | BTCUSDT_15m_val_v3.parquet | 35136 | 2024-01-01T00:00:00+00:00 | 2024-12-31T23:45:00+00:00
+Split TEST v3 | BTCUSDT_15m_test_v3.parquet | 46916 | 2025-01-01T00:00:00+00:00 | 2026-05-04T16:45:00+00:00
+Windows TRAIN v3 | BTCUSDT_15m_train_windows_v3.npz | 80017 | 2020-03-26T10:15:00+00:00 | 2023-12-31T23:45:00+00:00
+Windows VALIDATION v3 | BTCUSDT_15m_val_windows_v3.npz | 21141 | 2024-01-01T00:00:00+00:00 | 2024-12-31T23:45:00+00:00
+Windows TEST v3 | BTCUSDT_15m_test_windows_v3.npz | 25999 | 2025-01-01T00:00:00+00:00 | 2026-05-04T16:45:00+00:00
+Normalized TRAIN v7 | BTCUSDT_15m_train_windows_norm_v7.npz | 80017 | 2020-03-26T10:15:00+00:00 | 2023-12-31T23:45:00+00:00
+Normalized VALIDATION v7 | BTCUSDT_15m_val_windows_norm_v7.npz | 21141 | 2024-01-01T00:00:00+00:00 | 2024-12-31T23:45:00+00:00
+Normalized TEST v7 | BTCUSDT_15m_test_windows_norm_v7.npz | 25999 | 2025-01-01T00:00:00+00:00 | 2026-05-04T16:45:00+00:00
+
+Duomenų skaidymas
+Skiltis | Eilučių skaičius labeled v3 | Langų skaičius normalized v7 | Pradžia | Pabaiga
+TRAIN | 132053 | 80017 | 2020-03-26T10:15:00+00:00 | 2023-12-31T23:45:00+00:00
+VALIDATION | 35136 | 21141 | 2024-01-01T00:00:00+00:00 | 2024-12-31T23:45:00+00:00
+TEST | 46916 | 25999 | 2025-01-01T00:00:00+00:00 | 2026-05-04T16:45:00+00:00
+Bendras galutinių langų skaičius: 127157
+
+Tikslinių klasių pasiskirstymas
+Labeled v3 bendras pasiskirstymas:
+- UP: 65981
+- DOWN: 61664
+- NEUTRAL: 86460
+
+Labeled v3 pasiskirstymas pagal skiltis:
+- TRAIN: UP=41415, DOWN=38775, NEUTRAL=51863
+- VALIDATION: UP=11204, DOWN=10109, NEUTRAL=13823
+- TEST: UP=13362, DOWN=12780, NEUTRAL=20774
+
+Galutinis binarinis pasiskirstymas normalized v7 (po neutralių target pašalinimo):
+- TRAIN: UP=41332, DOWN=38685
+- VALIDATION: UP=11097, DOWN=10044
+- TEST: UP=13261, DOWN=12738
+- Iš viso: UP=65690, DOWN=61467
+
+Požymių rinkinio struktūra
+Bendras požymių skaičius: 26
+- Kainos ir grazos pozymiai (4): log_return_1, log_return_4, close_to_open_return, high_low_range_pct
+- Zvakes strukturos pozymiai (4): body_pct, upper_wick_pct, lower_wick_pct, body_to_range_ratio
+- Trendo pozymiai (3): ema_20_dist, ema_50_dist, ema_20_50_spread
+- Momento pozymiai (2): rsi_14, macd_hist
+- Volatilumo pozymiai (3): atr_14_pct, rolling_vol_12, rolling_vol_48
+- Apimties pozymiai (3): volume_change_1, volume_ma_ratio_20, turnover_ma_ratio_20
+- Laiko cikliniai pozymiai (4): hour_sin, hour_cos, dow_sin, dow_cos
+- Konteksto ir reiksmiu intervalo pozymiai (3): close_to_rolling_high_96, close_to_rolling_low_96, range_position_96
+
+Atrinktų požymių aprašomoji statistika
+Požymis | count | mean | std | min | 25% | 50% | 75% | max
+log_return_1 | 214285 | 0.000012 | 0.003261 | -0.132238 | -0.001216 | 0.000011 | 0.001258 | 0.109871
+log_return_4 | 214285 | 0.000047 | 0.006393 | -0.217514 | -0.002237 | 0.000059 | 0.002400 | 0.158613
+rsi_14 | 214285 | 50.529441 | 11.238264 | 4.247017 | 43.448111 | 50.568506 | 57.490600 | 95.086159
+macd_hist | 214285 | 0.003553 | 54.269175 | -753.505402 | -18.087910 | -0.045618 | 17.909821 | 837.448032
+atr_14_pct | 214285 | 0.003930 | 0.002569 | 0.000166 | 0.002316 | 0.003385 | 0.004831 | 0.049516
+rolling_vol_12 | 214285 | 0.002552 | 0.002047 | 0.000110 | 0.001327 | 0.002034 | 0.003146 | 0.057657
+rolling_vol_48 | 214285 | 0.002716 | 0.001811 | 0.000238 | 0.001602 | 0.002331 | 0.003289 | 0.032142
+volume_ma_ratio_20 | 214285 | 1.044996 | 1.004125 | 0.000754 | 0.483850 | 0.752465 | 1.221963 | 17.356569
+close_to_rolling_high_96 | 214285 | -0.020495 | 0.019797 | -0.291380 | -0.026571 | -0.014298 | -0.007600 | 0.000000
+close_to_rolling_low_96 | 214285 | 0.024867 | 0.024508 | 0.000000 | 0.009323 | 0.017264 | 0.032439 | 0.453717
+range_position_96 | 214285 | 0.527730 | 0.259649 | 0.000000 | 0.306007 | 0.537377 | 0.752653 | 1.000000
+hour_sin | 214285 | -0.000001 | 0.707086 | -1.000000 | -0.707107 | 0.000000 | 0.707107 | 1.000000
+hour_cos | 214285 | -0.000062 | 0.707131 | -1.000000 | -0.707107 | -0.000000 | 0.707107 | 1.000000
+dow_sin | 214285 | -0.000274 | 0.707088 | -0.974928 | -0.781831 | 0.000000 | 0.781831 | 0.974928
+dow_cos | 214285 | 0.000216 | 0.707129 | -0.900969 | -0.900969 | -0.222521 | 0.623490 | 1.000000
+
+Sugeneruotos vizualizacijos
+- Failas: figures/v7_close_price_full_period.png
+  Ką rodo: BTCUSDT uzdarymo kainos dinamika per visa analizuojama laikotarpi.
+  Siūlomas paveikslo pavadinimas: BTCUSDT 15 min. uzdarymo kainos dinamika visame analizuotame laikotarpyje.
+- Failas: figures/v7_volume_full_period.png
+  Ką rodo: BTCUSDT prekybos apimties dinamika per visa analizuojama laikotarpi.
+  Siūlomas paveikslo pavadinimas: BTCUSDT 15 min. prekybos apimties dinamika visame analizuotame laikotarpyje.
+- Failas: figures/v7_split_timeline.png
+  Ką rodo: Train, validation ir test skaidymo laiko atkarpos.
+  Siūlomas paveikslo pavadinimas: Duomenu rinkinio skaidymas i mokymo, validavimo ir testavimo laikotarpius.
+- Failas: figures/v7_target_class_distribution.png
+  Ką rodo: Labeled klasiu pasiskirstymas ir galutiniu binariniu mokymo klasiu pasiskirstymas pagal skiltis.
+  Siūlomas paveikslo pavadinimas: Tiksliniu klasiu pasiskirstymas pries ir po galutinio binarinio filtravimo.
+- Failas: figures/v7_selected_feature_distributions.png
+  Ką rodo: Atrinktu pagrindiniu pozymiu empiriniu skirstiniu histogramos.
+  Siūlomas paveikslo pavadinimas: Svarbiausiu modelio pozymiu skirstiniai parengtame duomenu rinkinyje.
+- Failas: figures/v7_selected_feature_correlation_heatmap.png
+  Ką rodo: Atrinktu pozymiu tarpusavio koreliaciju matrica.
+  Siūlomas paveikslo pavadinimas: Atrinktu pozymiu tarpusavio koreliaciju silumos zemelapis.
+- Failas: figures/v7_example_normalized_train_window.png
+  Ką rodo: Vieno normalizuoto mokymo lango pozymiu matrica.
+  Siūlomas paveikslo pavadinimas: Normalizuoto 256 zingsniu mokymo lango pavyzdys, naudotas TCN modeliui.
+
+Svarbiausios išvados 3.1 skyriui
+- Galutinis analizuotas modelio duomenų rinkinys yra normalized v7, kuris atitinka ankstesnį v3 požymių rinkinį su 26 požymiais.
+- Duomenys apima laikotarpį nuo 2020-03-25T10:30:00+00:00 iki 2026-05-06T15:45:00+00:00, o po apdorojimo ir pažymių konstravimo galutinis features v3 rinkinys turi 214285 eilučių.
+- Labeled v3 rinkinyje prieš galutinį binarinį filtravimą buvo trys klasės: UP=65981, DOWN=61664, NEUTRAL=86460.
+- Galutiniam TCN modelio mokymui naudoti 127157 langai, kurių sekos ilgis yra 256 laiko žingsnių.
+- Mokymo duomenų atvaizdavimo kryptis šiame variante buvo ne požymių mažinimas, o papildomo konteksto įtraukimas: prie bazinių kainos, trendo, momento ir apimties požymių pridėti laiko cikliniai bei rolling range konteksto požymiai.
+- Esamo validavimo skripto ataskaitos rodo, kad raw rinkinyje intervalų tarpų nerasta, o processed rinkinyje liko vienas 45 minučių tarpas po filtravimo; ši informacija papildomai išsaugota raw_validation.txt ir processed_validation.txt failuose.
+- V7 artefaktai patvirtina, kad geriausiam modeliui naudotas 26 požymių, 256 žingsnių įėjimo langų duomenų rinkinys.
